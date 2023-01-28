@@ -1,0 +1,5 @@
+name: '${project.name}'
+version: '${project.version}'
+main: me.liamhbest.nmsadvanced.NMSPlugin
+author: Liam
+description: '${project.description}'
