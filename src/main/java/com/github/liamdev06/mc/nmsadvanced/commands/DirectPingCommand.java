@@ -1,16 +1,18 @@
-package me.liamhbest.nmsadvanced.commands;
+package com.github.liamdev06.mc.nmsadvanced.commands;
 
-import me.liamhbest.nmsadvanced.utility.Common;
-import me.liamhbest.nmsadvanced.utility.PlayerCommand;
+import com.github.liamdev06.mc.nmsadvanced.utility.PlayerCommand;
+import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
+import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegistry;
+import com.github.liamdev06.mc.nmsadvanced.utility.Common;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+/**
+ * Get the player's ping using direct NMS access
+ */
+@AutoRegister(type = AutoRegistry.Type.COMMAND)
 public class DirectPingCommand extends PlayerCommand {
-
-    /**
-     * Displays the player's ping in milliseconds using direct NMS.
-     */
 
     public DirectPingCommand() {
         super("directping");

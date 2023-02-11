@@ -1,5 +1,6 @@
 name: '${project.name}'
 version: '${project.version}'
-main: me.liamhbest.nmsadvanced.NMSPlugin
+main: com.github.liamdev06.mc.nmsadvanced.NMSPlugin
 author: Liam
 description: '${project.description}'
+softdepend: [ProtocolLib]

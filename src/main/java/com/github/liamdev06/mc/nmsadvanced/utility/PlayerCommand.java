@@ -1,4 +1,4 @@
-package me.liamhbest.nmsadvanced.utility;
+package com.github.liamdev06.mc.nmsadvanced.utility;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -10,16 +10,21 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+/**
+ * Simple framework to use regular commands
+ *
+ * @author Liam, not from course.
+ */
 public abstract class PlayerCommand extends Command {
 
     public PlayerCommand(String command) {
         super(command);
-        init();
+        this.init();
     }
 
     public PlayerCommand(String command, String... aliases) {
         super(command, "", "/" + command, Arrays.asList(aliases));
-        init();
+        this.init();
     }
 
     private void init() {

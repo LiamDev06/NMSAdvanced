@@ -1,11 +1,17 @@
-package me.liamhbest.nmsadvanced.commands;
+package com.github.liamdev06.mc.nmsadvanced.commands;
 
-import me.liamhbest.nmsadvanced.utility.Common;
-import me.liamhbest.nmsadvanced.utility.PlayerCommand;
+import com.github.liamdev06.mc.nmsadvanced.utility.PlayerCommand;
+import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
+import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegistry;
+import com.github.liamdev06.mc.nmsadvanced.utility.Common;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 
+/**
+ * Get the player's ping using Reflection NMS access
+ */
+@AutoRegister(type = AutoRegistry.Type.COMMAND)
 public class ReflectionPingCommand extends PlayerCommand {
 
     public ReflectionPingCommand() {
