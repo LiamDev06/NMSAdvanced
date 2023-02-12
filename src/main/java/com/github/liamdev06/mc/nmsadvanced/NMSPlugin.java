@@ -58,7 +58,11 @@ public class NMSPlugin extends JavaPlugin {
 
     private void registerCommands() {
         for (Class<?> clazz : AutoRegistry.getClassesWithRegisterType(AutoRegistry.Type.COMMAND)) {
-            AutoRegistry.register(clazz);
+            if (clazz.getTypeParameters().length == 0) {
+                AutoRegistry.register(clazz, null, null);
+            } else {
+                AutoRegistry.register(clazz, NMSPlugin.class, this);
+            }
         }
     }
 
@@ -69,10 +73,16 @@ public class NMSPlugin extends JavaPlugin {
         }
     }
 
+    /**
+     * @return the singleton plugin instance
+     */
     public static NMSPlugin getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * @return the protocol manager from the spigot plugin <a href="https://www.spigotmc.org/resources/protocollib.1997/">ProtocolLib</a>
+     */
     public @Nullable ProtocolManager getProtocolManager() {
         return this.protocolManager;
     }

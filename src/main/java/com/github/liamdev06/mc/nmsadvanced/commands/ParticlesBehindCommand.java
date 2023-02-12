@@ -18,20 +18,20 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.*;
 
 /**
- * Spawns particles behind a player wherever they walk by accessing NMS directly
+ * Spawns particles behind a player every tick whenever they walk by accessing NMS directly
  * This is only sent to the specified player, not to everyone
  * The command /particles toggles on and off the feature
  *
  * @author Liam and course (course was using a library for certain things that I want to avoid. I do not learn from using an API that does everytihng for me...)
  */
 @AutoRegister(type = AutoRegistry.Type.COMMAND)
-public class SpawnParticlesCommand extends PlayerCommand {
+public class ParticlesBehindCommand extends PlayerCommand {
 
     private static final Random RANDOM = new Random();
     private final @NonNull Map<UUID, BukkitTask> sendingParticles;
 
-    public SpawnParticlesCommand() {
-        super("spawnparticles");
+    public ParticlesBehindCommand() {
+        super("particlesbehind");
         this.sendingParticles = new HashMap<>();
     }
 
