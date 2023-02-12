@@ -4,6 +4,9 @@ This repository includes a variety of features and creations relating to NMS plu
 ## Information
 The **NMSAdvanced** repository is a Spigot 1.8.8 plugin including everything from particles, animations, commands, NPCs, NBT data, GUIs and much more. As I build onto this project, I will keep updating the features section down below. The plugin does not serve any direct purpose - it is a general collection of things I have built that requires the use of NMS during my journey of learning the advanced parts of plugin development.
 
+## Note: '@author Liam'
+Certain classes/methods may be documented with '@author Liam'. Code from there is not taken from the course but instead developed by me.
+
 ## Features
 - Commands
   - `/directping` - get the users ping by accessing NMS directly
