@@ -20,8 +20,6 @@ import java.util.UUID;
  */
 public class ServerMenuInfoModifier {
 
-    //Todo: does not work :/
-
     public ServerMenuInfoModifier(NMSPlugin plugin, ProtocolManager protocolManager) {
         // Listen for the server info packet using Protocol Lib
         protocolManager.addPacketListener(new PacketAdapter(
@@ -29,7 +27,7 @@ public class ServerMenuInfoModifier {
                 ListenerPriority.HIGH,
                 PacketType.Status.Server.OUT_SERVER_INFO) {
             @Override
-            public void onPacketReceiving(PacketEvent event) {
+            public void onPacketSending(PacketEvent event) {
                 // Get Protocol Lib's wrapped version of the server ping by reading the first field in the array
                 WrappedServerPing ping = event.getPacket().getServerPings().read(0);
 

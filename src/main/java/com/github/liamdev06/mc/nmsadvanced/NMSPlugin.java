@@ -16,8 +16,6 @@ import java.util.logging.Logger;
  */
 public class NMSPlugin extends JavaPlugin {
 
-    // TODO: add to github that the things marked with@authorliam is not in the course
-
     private static NMSPlugin INSTANCE;
     private final String NAME = this.getDescription().getName();
     private final String VERSION = this.getDescription().getVersion();
