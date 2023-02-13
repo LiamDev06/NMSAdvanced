@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Automatically initialize the constructor for classes that are marked with the @AutoRegister annotation
  *
- * @author Liam, not from course
+ * @author Liam
  */
 public class AutoRegistry {
 
@@ -58,7 +58,8 @@ public class AutoRegistry {
     }
 
     public enum Type {
-        COMMAND
+        COMMAND,
+        CUSTOM_ENTITY
     }
 }
 

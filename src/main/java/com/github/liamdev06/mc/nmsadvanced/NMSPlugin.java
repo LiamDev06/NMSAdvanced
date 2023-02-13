@@ -2,6 +2,8 @@ package com.github.liamdev06.mc.nmsadvanced;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.github.liamdev06.mc.nmsadvanced.utility.NMSUtil;
+import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegistry;
 import com.github.liamdev06.mc.nmsadvanced.models.ServerMenuInfoModifier;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Main plugin class
  *
- * @author Liam, not from course.
+ * @author Liam
  */
 public class NMSPlugin extends JavaPlugin {
 
@@ -41,6 +43,9 @@ public class NMSPlugin extends JavaPlugin {
         // Models
         this.loadModels();
 
+        // Register entities
+        this.registerEntities();
+
         // Done
         log.info(NAME + " version " + VERSION + " has loaded successfully in " + (System.currentTimeMillis() - time) + "ms!");
     }
@@ -56,6 +61,9 @@ public class NMSPlugin extends JavaPlugin {
         log.info(NAME + " version " + VERSION + " disabled in " + (System.currentTimeMillis() - time) + "ms!");
     }
 
+    /**
+     * Register all commands by initializing the constructor of all classes with annotation @AutoRegister with element type COMMAND
+     */
     private void registerCommands() {
         for (Class<?> clazz : AutoRegistry.getClassesWithRegisterType(AutoRegistry.Type.COMMAND)) {
             if (clazz.getTypeParameters().length == 0) {
@@ -70,6 +78,16 @@ public class NMSPlugin extends JavaPlugin {
         // Load in specific models that requires ProtocolLib
         if (this.protocolManager != null) {
             new ServerMenuInfoModifier(this, this.protocolManager);
+        }
+    }
+
+    /**
+     * Register all custom entities by looping through all classes with annotation @AutoRegister with element type CUSTOM_ENTITY
+     * and register them using NMSUtil#registerEntity
+     */
+    private void registerEntities() {
+        for (Class<?> clazz : AutoRegistry.getClassesWithRegisterType(AutoRegistry.Type.CUSTOM_ENTITY)) {
+            NMSUtil.registerEntity(clazz.getSimpleName(), clazz.getAnnotation(AutoRegister.class).entityId(), clazz);
         }
     }
 

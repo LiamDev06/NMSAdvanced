@@ -27,8 +27,9 @@ import java.util.*;
 @AutoRegister(type = AutoRegistry.Type.COMMAND)
 public class ParticlesBehindCommand extends PlayerCommand {
 
-    private static final Random RANDOM = new Random();
     private final @NonNull Map<UUID, BukkitTask> sendingParticles;
+
+    // TODO: Make it spawn behind instead of in the player
 
     public ParticlesBehindCommand() {
         super("particlesbehind");

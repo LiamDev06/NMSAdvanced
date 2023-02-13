@@ -8,12 +8,13 @@ import java.lang.annotation.Target;
 /**
  * Automatically initialize objects that are marked with this (@AutoRegister) annotation
  *
- * @author Liam, not from course.
+ * @author Liam
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AutoRegister {
 
     AutoRegistry.Type type();
+    int entityId() default 0;
 
 }

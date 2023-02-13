@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 /**
  * Send action bars and titles by accessing NMS directly
  *
- * @author Liam, not from course.
+ * @author Liam
  */
 @AutoRegister(type = AutoRegistry.Type.COMMAND)
 public class DisplayCommand extends PlayerCommand {

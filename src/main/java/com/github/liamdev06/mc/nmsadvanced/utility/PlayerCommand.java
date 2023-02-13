@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * Simple framework to use regular commands
  *
- * @author Liam, not from course.
+ * @author Liam
  */
 public abstract class PlayerCommand extends Command {
 

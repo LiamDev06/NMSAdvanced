@@ -6,7 +6,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 /**
  * Set of basic utilities and helpers
  *
- * @author Liam, not from course.
+ * @author Liam
  */
 public class Common {
 
