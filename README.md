@@ -15,3 +15,5 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
   - `/particlesbehind` - spawn particles behind a player when they walk using direct NMS
 - Models
   - `Server Menu Info Modifier` - modifies the server menu info by listening for the OutServerInfo packet and intercepting it
+- Custom Entities
+  - `Killer Snowman` - custom entity snowman that overrides target+goal selectors to target nearby players and shots them with snowballs
