@@ -11,3 +11,7 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
 - Commands
   - `/directping` - get the users ping by accessing NMS directly
   - `/reflectionping` - get the users ping by accessing NMS using reflection
+  - `/display` - display an action bar or title using direct NMS with a specified message 
+  - `/particlesbehind` - spawn particles behind a player when they walk using direct NMS
+- Models
+  - `Server Menu Info Modifier` - modifies the server menu info by listening for the OutServerInfo packet and intercepting it
