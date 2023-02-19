@@ -43,9 +43,9 @@ public class GameEntitySpawnCommand extends PlayerCommand {
     }
 
     /**
-     * @author Liam
      * @param input the player input's name of the entity they are checking
      * @return if the input is a valid entity name
+     * @author Liam
      */
     private boolean isEntityInvalid(String input) {
         for (GameEntity gameEntity : GameEntity.VALUES) {
@@ -58,8 +58,8 @@ public class GameEntitySpawnCommand extends PlayerCommand {
     }
 
     /**
-     * @author Liam
      * @return a list of all game entities available in a nice format
+     * @author Liam
      */
     private String getValidEntities() {
         StringBuilder builder = new StringBuilder();

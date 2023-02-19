@@ -36,8 +36,8 @@ public enum GameEntity {
     public void spawn(Location location) throws GameEntitySpawnError {
         Entity entity;
 
-        // Initiate the constructor for the NMS entity class using reflection
         try {
+            // Initialize the constructor for the NMS entity class using reflection
             Constructor<?> constructor = this.entityClass.getConstructor(Location.class);
             entity = (Entity) constructor.newInstance(location);
         } catch (Exception exception) {

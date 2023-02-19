@@ -23,10 +23,10 @@ public class DirectPingCommand extends PlayerCommand {
         // Get the NMS version of the player
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
 
-        // Get the ping
+        // Get the ping (ping field)
         int ping = entityPlayer.ping;
 
-        // Send the ping
+        // Send the ping as a player message
         player.sendMessage(Common.color("&aYour ping is: &6" + ping));
     }
 }

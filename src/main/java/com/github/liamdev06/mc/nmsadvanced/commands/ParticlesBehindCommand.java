@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.*;
@@ -29,8 +30,6 @@ public class ParticlesBehindCommand extends PlayerCommand {
 
     private final @NonNull Map<UUID, BukkitTask> sendingParticles;
 
-    // TODO: Make it spawn behind instead of in the player
-
     public ParticlesBehindCommand() {
         super("particlesbehind");
         this.sendingParticles = new HashMap<>();
@@ -40,22 +39,25 @@ public class ParticlesBehindCommand extends PlayerCommand {
     public void onPlayerCommand(Player player, String[] args) {
         UUID uuid = player.getUniqueId();
 
-        // Cancel the task if the player is sending particles
+        // Cancel the task if the player is already sending particles
         if (this.sendingParticles.containsKey(uuid)) {
-            BukkitTask task = this.sendingParticles.get(uuid);
-            task.cancel();
-
+            this.sendingParticles.get(uuid).cancel();
             this.sendingParticles.remove(uuid);
+
+            // Message
             player.sendMessage(Common.color("&eStopped spawning particles!"));
             return;
         }
 
         // Start sending particles
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(NMSPlugin.getInstance(), () -> {
-            this.spawnParticles(player, player.getLocation());
+            this.spawnParticlesBehindPlayer(player);
         }, 0, 1);
 
+        // Store that the player is sending particles
         this.sendingParticles.put(uuid, task);
+
+        // Message
         player.sendMessage(Common.color("&aYou will now have particles spawned behind you"));
     }
 
@@ -63,10 +65,17 @@ public class ParticlesBehindCommand extends PlayerCommand {
      * Sends a client-bound packet (server -> client) to the target player
      * The packet is a WorldParticles packet and specifies things like which particle, location to spawn, amount and more
      *
-     * @param player the player to spawn the particles for
-     * @param location the location to spawn the particle at
+     * @param player the player to spawn the particles for and behind
      */
-    private void spawnParticles(Player player, Location location) {
+    private void spawnParticlesBehindPlayer(Player player) {
+        // Calculate location to spawn particles behind the player
+        Vector direction = player.getLocation().getDirection(); // get the player's direction vector
+        direction.setY(0).normalize() // get rid of the Y component as we do not want to modify it and normalize after
+            .multiply(-0.5); // make the vector's length -0.5 to make X and Z offset be just behind the player
+
+        // Add the updated vector direction to the location to spawn particles at
+        Location location = player.getLocation().add(direction);
+
         // Create the packet
         PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
                 EnumParticle.VILLAGER_HAPPY, // particle type
@@ -81,7 +90,7 @@ public class ParticlesBehindCommand extends PlayerCommand {
                 3 // particle amount/count
         );
 
-        // Send the packet
+        // Send the packet via the entity player's player connection
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         entityPlayer.playerConnection.sendPacket(packet);
     }

@@ -27,6 +27,10 @@ public abstract class PlayerCommand extends Command {
         this.init();
     }
 
+    /**
+     * Register the command to the command map
+     * This makes it possible to register commands without having to put them in the plugin.yml
+     */
     private void init() {
         try {
             Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");

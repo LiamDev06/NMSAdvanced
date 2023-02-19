@@ -3,4 +3,5 @@ version: '${project.version}'
 main: com.github.liamdev06.mc.nmsadvanced.NMSPlugin
 author: Liam
 description: '${project.description}'
+loadbefore: [ProtocolLib]
 softdepend: [ProtocolLib]

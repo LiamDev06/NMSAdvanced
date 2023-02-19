@@ -48,11 +48,19 @@ public class KillerSnowman extends EntitySnowman {
         // Spawn the snowball
         this.world.addEntity(entitySnowball);
 
-        // LIAM IMPLEMENTATION START
-        // If the entity hit was a player, make it take some damage
+        // If the entity hit was a player, make it take some damage by subtracting the HIT_DAMAGE from the current damage
         if (entityliving instanceof EntityPlayer) {
             Player player = ((EntityPlayer) entityliving).getBukkitEntity();
-            player.setHealth(player.getHealth() - HIT_DAMAGE);
+            double newHealth = player.getHealth() - HIT_DAMAGE;
+
+            // Check if the new health would mean that the player is dead
+            if (newHealth <= 0) {
+                player.setHealth(0);
+                return;
+            }
+
+            // Modify the player's health to the new damaged value
+            player.setHealth(newHealth);
         }
     }
 }

@@ -23,13 +23,13 @@ public class ReflectionPingCommand extends PlayerCommand {
         int ping = -1;
 
         try {
-            // Get the player's handle (NMS entity player)
+            // Get the NMS entity player (player's handle)
             Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
 
             // Get the ping field
             Field pingField = entityPlayer.getClass().getField("ping");
 
-            // Make the field accessible, if the field is private it will not work otherwise
+            // Make the field accessible, if the field is private it will not work unless acciessible is set to true
             pingField.setAccessible(true);
 
             // Get the content of the field for the player
@@ -38,10 +38,13 @@ public class ReflectionPingCommand extends PlayerCommand {
             exception.printStackTrace();
         }
 
-        if (ping != -1) {
-            player.sendMessage(Common.color("&aYour ping is: &6" + ping));
-        } else {
+        // Something went wrong when fetching the ping, the ping value is still -1
+        if (ping == -1) {
             player.sendMessage(Common.color("&cSomething went wrong fetching your ping, see the console!"));
+            return;
         }
+
+        // Pinged fetched without problems, send it
+        player.sendMessage(Common.color("&aYour ping is: &6" + ping));
     }
 }
