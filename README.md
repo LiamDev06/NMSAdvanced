@@ -16,7 +16,13 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
   - `/reflectionping` - get the users ping by accessing NMS using reflection
   - `/display` - display an action bar or title using direct NMS with a specified message 
   - `/particlesbehind` - spawn particles behind a player when they walk using direct NMS
+  - `/gameentityspawn` - spawn any custom game entity registered in the plugin
 - Models
   - `Server Menu Info Modifier` - modifies the server menu info by listening for the OutServerInfo packet and intercepting it
 - Custom Entities
   - `Killer Snowman` - custom entity snowman that overrides target+goal selectors to target nearby players and shots them with snowballs
+- Pathfinder Goals
+  - Pathfinder goal wrapper class to give obfustaced methods nice-understandable names
+  - `PathfinderGoalGamePet` - custom pathfinder goal that makes an entity navigate to a player (its owner) to create a pet-like feeling
+- Pets
+  - `Friendly Wolf` - custom wolf pet that turns any wolf into a player pet and applies a custom pathfinder goal upon clicked
