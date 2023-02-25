@@ -17,10 +17,13 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
   - `/display` - display an action bar or title using direct NMS with a specified message 
   - `/particlesbehind` - spawn particles behind a player when they walk using direct NMS
   - `/gameentityspawn` - spawn any custom game entity registered in the plugin
+  - `/spawnnpc` - spawn an npc with a specific name, skin and decide if it should show in tablist or not
 - Models
   - `Server Menu Info Modifier` - modifies the server menu info by listening for the OutServerInfo packet and intercepting it
 - Custom Entities
   - `Killer Snowman` - custom entity snowman that overrides target+goal selectors to target nearby players and shots them with snowballs
+- NPCs
+  - `GameNPC` - class to spawn NPCs, set their skin, show and hide to players and set if they should look at a player
 - Pathfinder Goals
   - Pathfinder goal wrapper class to give obfustaced methods nice-understandable names
   - `PathfinderGoalGamePet` - custom pathfinder goal that makes an entity navigate to a player (its owner) to create a pet-like feeling
