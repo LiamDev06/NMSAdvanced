@@ -2,10 +2,12 @@ package com.github.liamdev06.mc.nmsadvanced;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.github.liamdev06.mc.nmsadvanced.npc.GameNPCRegistry;
 import com.github.liamdev06.mc.nmsadvanced.utility.NMSUtil;
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegistry;
 import com.github.liamdev06.mc.nmsadvanced.models.ServerMenuInfoModifier;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -13,6 +15,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 /**
@@ -27,6 +32,7 @@ public class NMSPlugin extends JavaPlugin {
     private final String VERSION = this.getDescription().getVersion();
     private final @NonNull Logger log = this.getLogger();
     private @Nullable ProtocolManager protocolManager;
+    private @Nullable GameNPCRegistry npcRegistry;
 
     @Override
     public void onEnable() {
@@ -40,6 +46,18 @@ public class NMSPlugin extends JavaPlugin {
             this.protocolManager = ProtocolLibrary.getProtocolManager();
         } else {
             log.warning("ProtocolLib is not enabled! This will decrease the amount of features enabled.");
+        }
+
+        // Setup config and data files
+        this.saveDefaultConfig();
+        File dataFile = this.setupFile("data.yml");
+
+        // Setup NPCs
+        try {
+            this.npcRegistry = new GameNPCRegistry(dataFile);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            log.warning("The NPC registry could not be setup correctly! See the console error.");
         }
 
         // Register commands
@@ -62,7 +80,11 @@ public class NMSPlugin extends JavaPlugin {
     public void onDisable() {
         long time = System.currentTimeMillis();
 
-        // Shutdown code
+        // Save all NPCs
+        if (this.npcRegistry != null) {
+            this.npcRegistry.saveAll();
+            NMSPlugin.getInstance().getLogger().info("Npc registry was saved");
+        }
 
         INSTANCE = null;
         log.info(NAME + " version " + VERSION + " disabled in " + (System.currentTimeMillis() - time) + "ms!");
@@ -125,6 +147,41 @@ public class NMSPlugin extends JavaPlugin {
     }
 
     /**
+     * @see NMSPlugin#setupFile(String, String)
+     */
+    private File setupFile(@NonNull String fileName) {
+        return this.setupFile(fileName, null);
+    }
+
+    /**
+     * Sets up a new file in the plugin directory within the server
+     *
+     * @param fileName the name of the file
+     * @param pathAddon optional to add a path addon that can be used to put the file in a folder, like /npcs or /items
+     * @return the actual file that was created
+     */
+    private File setupFile(String fileName, @Nullable String pathAddon) {
+        File file = new File(this.getDataFolder() + (pathAddon == null ? "" : pathAddon), fileName);
+
+        // Copy the file to the plugin data folder
+        InputStream inputStream = this.getClassLoader().getResourceAsStream(fileName);
+        if (!file.exists()) {
+            try {
+                // Create the file
+                if (file.createNewFile()) {
+                    // Copy the contents/file
+                    if (inputStream != null) {
+                        FileUtils.copyInputStreamToFile(inputStream, file);
+                    }
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return file;
+    }
+
+    /**
      * @return the singleton plugin instance
      */
     public static NMSPlugin getInstance() {
@@ -136,5 +193,12 @@ public class NMSPlugin extends JavaPlugin {
      */
     public @Nullable ProtocolManager getProtocolManager() {
         return this.protocolManager;
+    }
+
+    /**
+     * @return NPC manager to class that stores information about NPCs
+     */
+    public @Nullable GameNPCRegistry getNpcRegistry() {
+        return this.npcRegistry;
     }
 }
