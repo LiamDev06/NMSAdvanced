@@ -13,7 +13,10 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -21,16 +24,21 @@ import java.util.UUID;
 /**
  * Custom NPC using direct NMS access to spawn an NPC
  * The class holds methods for spawning, look at a player, show and hide the NPC, set skin and more.
+ * @author Liam and course
  */
-public final class GameNPC {
+public final class GameNPC implements Serializable {
 
-    private final String name;
-    private EntityPlayer npc;
-    private final Set<UUID> viewers;
+    public @NonNull String name;
+    public @Nullable String skin;
+    public Location spawnLocation;
+    public boolean lookingAtPlayer;
+    public @Nullable EntityPlayer npc;
+    public @NonNull Set<UUID> viewers;
 
-    public GameNPC(String name) {
+    public GameNPC(@NonNull String name) {
         this.name = name;
         this.viewers = new HashSet<>();
+        this.lookingAtPlayer = false;
     }
 
     /**
@@ -39,6 +47,11 @@ public final class GameNPC {
      * @param location the location to spawn the NPC at
      */
     public void spawn(Location location) {
+        // If the spawn location is not null, force override to have the NPC at the stored location
+        if (this.spawnLocation != null) {
+            location = this.spawnLocation;
+        }
+
         // Values for the entity player constructor
         final MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         final WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
@@ -73,6 +86,12 @@ public final class GameNPC {
      * @param showInTab if the NPC should be displayed as a "player" in the tab list or not
      */
     public void show(Player player, boolean showInTab) {
+        // Cancel if the NPC is null
+        if (this.npc == null) {
+            this.warning("NPC with name '" + this.name + "' is null and cannot be spawned!");
+            return;
+        }
+
         // Send player info packet to notify the client that we added a new "player" (NPC)
         PacketPlayOutPlayerInfo playerInfoPacket = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this.npc);
         this.sendPacket(player, playerInfoPacket);
@@ -121,6 +140,12 @@ public final class GameNPC {
      * @param player the player to hide the NPC for
      */
     public void hide(Player player) {
+        // Cancel if the NPC is null
+        if (this.npc == null) {
+            this.warning("NPC with name '" + this.name + "' is null and cannot be hidden!");
+            return;
+        }
+
         // The player is not viewing the NPC, do not send a packet
         final UUID uuid = player.getUniqueId();
         if (!this.viewers.contains(uuid)) {
@@ -142,6 +167,14 @@ public final class GameNPC {
      * @param targetLocation the location to have the NPC look at
      */
     public void setLookingAt(Location targetLocation) {
+        // Cancel if the NPC is null
+        if (this.npc == null) {
+            this.warning("NPC with name '" + this.name + "' is null and cannot be set to look at a location!");
+            return;
+        }
+
+        // TODO: Store the last look direction and only send new packets if it changed to minimize the amount of packets being sent
+
         final Location entityLoc = this.npc.getBukkitEntity().getLocation();
 
         // Get two points and subtract them as vector to get the point where the NPC should look at
@@ -165,11 +198,33 @@ public final class GameNPC {
     }
 
     /**
+     * Setting to change if the NPC should look at players
+     *
+     * @param value boolean value if the NPC should look at players
+     */
+    public void setLookingAtPlayer(boolean value) {
+        this.lookingAtPlayer = value;
+    }
+
+    /**
      * Sets the skin of the NPC using the skin name (player name) provided
      *
      * @param skinName the name of an existing Minecraft player who's skin to set the NPC to
      */
     public void setSkin(String skinName, boolean showInTab) {
+        // Cancel if the NPC is null
+        if (this.npc == null) {
+            this.warning("NPC with name '" + this.name + "' is null and cannot be set a skin!");
+            return;
+        }
+
+        // If the skin is not null, force override to have the NPC used the stored skin
+        if (this.skin != null) {
+            skinName = this.skin;
+        } else {
+            this.skin = skinName;
+        }
+
         // Store all old viewers of the NPC and hide the NPC
         final Set<UUID> oldViewers = new HashSet<>(this.viewers);
         this.hideAll();
@@ -199,7 +254,7 @@ public final class GameNPC {
                     continue;
                 }
 
-                // Show the NPC again to the target viewier
+                // Show the NPC again to the target viewer
                 this.show(oldViewer, showInTab);
             }
         });
@@ -231,6 +286,69 @@ public final class GameNPC {
         }
     }
 
+    public Location getLocation() {
+        return this.npc == null ? null : this.npc.getBukkitEntity().getLocation();
+    }
+
+    /**
+     * @return the skin the NPC is set to
+     */
+    public @Nullable String getSkin() {
+        return this.skin;
+    }
+
+    /**
+     * @return the name the NPC is set to
+     */
+    public @NonNull String getName() {
+        return this.name;
+    }
+
+    /**
+     * @return a list of UUID's that are currently viewing/registered viewers of this NPC
+     */
+    public @NonNull Set<UUID> getViewers() {
+        return this.viewers;
+    }
+
+    /**
+     * @return if this NPC is not equal to null (meaning it is spawned)
+     */
+    public boolean isSpawned() {
+        return this.npc != null;
+    }
+
+    /**
+     * @return if this NPC is trying to look at nearby players
+     */
+    public boolean isLookingAtPlayer() {
+        return this.lookingAtPlayer;
+    }
+
+    /**
+     * @return this NPC as an NMS entity player
+     */
+    public EntityPlayer getNpcEntity() {
+        return this.npc;
+    }
+
+    /**
+     * @return if the NPC has spawned, this will be equal to their spawning location
+     */
+    public Location getSpawnLocation() {
+        return this.spawnLocation;
+    }
+
+    /**
+     * Set a location the NPC should spawn at when being spawned
+     * This would override the location in the {@link GameNPC#spawn(Location)} method
+     *
+     * @param spawnLocation the location to have the NPC spawn at
+     */
+    public void setSpawnLocation(Location spawnLocation) {
+        this.spawnLocation = spawnLocation;
+    }
+
     /**
      * Send a specific packet to a specified player
      *
@@ -251,6 +369,15 @@ public final class GameNPC {
      */
     private byte modifiedDirection(double input) {
         return (byte) (input * 256 / 360);
+    }
+
+    /**
+     * Log a warning to the console
+     *
+     * @param warning the warning without prefix to log
+     */
+    private void warning(String warning) {
+        NMSPlugin.getInstance().getServer().getConsoleSender().sendMessage(Common.color("&c[WARNING] " + warning));
     }
 
     @Override

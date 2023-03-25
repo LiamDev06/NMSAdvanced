@@ -2,6 +2,7 @@ package com.github.liamdev06.mc.nmsadvanced.commands;
 
 import com.github.liamdev06.mc.nmsadvanced.NMSPlugin;
 import com.github.liamdev06.mc.nmsadvanced.npc.GameNPC;
+import com.github.liamdev06.mc.nmsadvanced.npc.GameNPCRegistry;
 import com.github.liamdev06.mc.nmsadvanced.utility.Common;
 import com.github.liamdev06.mc.nmsadvanced.utility.PlayerCommand;
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
@@ -51,6 +52,11 @@ public class GameNPCSpawnCommand extends PlayerCommand {
         npc.showAll(showInTab);
         npc.setSkin(skinName, showInTab);
         this.applyLookAtPlayer(npc, player);
+
+        GameNPCRegistry registry = NMSPlugin.getInstance().getNpcRegistry();
+        if (registry != null) {
+            registry.register(npc);
+        }
 
         // Done
         player.sendMessage(Common.color("&aYou spawned the NPC '&f" + npcName + "&a' for all players."));
