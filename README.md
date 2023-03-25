@@ -24,6 +24,7 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
   - `Killer Snowman` - custom entity snowman that overrides target+goal selectors to target nearby players and shots them with snowballs
 - NPCs
   - `GameNPC` - class to spawn NPCs, set their skin, show and hide to players and set if they should look at a player
+  - `NPC Registry` - persistant storage for NPCs. NPCs are serialized on server shutdown and stored in a data.yml
 - Pathfinder Goals
   - Pathfinder goal wrapper class to give obfustaced methods nice-understandable names
   - `PathfinderGoalGamePet` - custom pathfinder goal that makes an entity navigate to a player (its owner) to create a pet-like feeling
