@@ -1,6 +1,5 @@
-package com.github.liamdev06.mc.nmsadvanced.listeners;
+package com.github.liamdev06.mc.nmsadvanced.pets;
 
-import com.github.liamdev06.mc.nmsadvanced.pets.GamePet;
 import com.github.liamdev06.mc.nmsadvanced.pets.pathfindergoals.PathfinderGoalGamePet;
 import com.github.liamdev06.mc.nmsadvanced.utility.Common;
 import com.github.liamdev06.mc.nmsadvanced.utility.SoundHelper;
@@ -19,11 +18,11 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import java.util.UUID;
 
 /**
- * Regular bukkit listener to listen for entity specific events
+ * Regular bukkit listener to listen for events related to pets
  * @author Liam and course, mixed
  */
 @AutoRegister(type = AutoRegistry.Type.LISTENER)
-public class EntityListener implements Listener {
+public class PetListener implements Listener {
 
     @EventHandler
     public void onEntityRightClick(PlayerInteractAtEntityEvent event) {

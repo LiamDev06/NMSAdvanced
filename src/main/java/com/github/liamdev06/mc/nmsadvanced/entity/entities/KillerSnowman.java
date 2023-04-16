@@ -1,4 +1,4 @@
-package com.github.liamdev06.mc.nmsadvanced.customentity.entities;
+package com.github.liamdev06.mc.nmsadvanced.entity.entities;
 
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegistry;
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 /**
  * Custom-made entity using direct NMS access
  * This is a snowman that has been customized to follow a player and shoot snowballs at them
+ *
+ * @author adjustments by Liam
  */
 @AutoRegister(type = AutoRegistry.Type.CUSTOM_ENTITY, entityId = 97)
 public class KillerSnowman extends EntitySnowman {

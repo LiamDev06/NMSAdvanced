@@ -1,16 +1,20 @@
-package com.github.liamdev06.mc.nmsadvanced.customentity;
+package com.github.liamdev06.mc.nmsadvanced.entity;
 
-import com.github.liamdev06.mc.nmsadvanced.customentity.entities.KillerSnowman;
-import com.github.liamdev06.mc.nmsadvanced.customentity.exceptions.GameEntitySpawnError;
+import com.github.liamdev06.mc.nmsadvanced.NMSPlugin;
+import com.github.liamdev06.mc.nmsadvanced.entity.entities.KillerSnowman;
+import com.github.liamdev06.mc.nmsadvanced.entity.exceptions.GameEntitySpawnErrorException;
+import com.github.liamdev06.mc.nmsadvanced.utility.metadata.Metadata;
 import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.lang.reflect.Constructor;
 
 /**
  * Holds all custom entities and there entity class
+ *
  * @author course but adjustments by Liam
  */
 public enum GameEntity {
@@ -31,9 +35,9 @@ public enum GameEntity {
      *
      * @author Liam and course (reflection code is made by me since the course was using a library for reflection)
      * @param location the location to spawn the entity at
-     * @throws GameEntitySpawnError thrown if the entity could not be spawned properly
+     * @throws GameEntitySpawnErrorException thrown if the entity could not be spawned properly
      */
-    public void spawn(Location location) throws GameEntitySpawnError {
+    public CraftEntity spawn(Location location) throws GameEntitySpawnErrorException {
         Entity entity;
 
         try {
@@ -41,7 +45,7 @@ public enum GameEntity {
             Constructor<?> constructor = this.entityClass.getConstructor(Location.class);
             entity = (Entity) constructor.newInstance(location);
         } catch (Exception exception) {
-            throw new GameEntitySpawnError("The constructor could not be initialized using reflection for entity " + this.entityClass.getSimpleName());
+            throw new GameEntitySpawnErrorException("The constructor could not be initialized using reflection for entity " + this.entityClass.getSimpleName());
         }
 
         // Set the position and add the entity to the world
@@ -52,6 +56,11 @@ public enum GameEntity {
         CraftEntity craftEntity = entity.getBukkitEntity();
         craftEntity.setCustomNameVisible(true);
         craftEntity.setCustomName(this.displayName);
+
+        // Add metadata to know this is a custom mob
+        craftEntity.setMetadata("CustomEntity", new FixedMetadataValue(NMSPlugin.getInstance(), this.name()));
+
+        return entity.getBukkitEntity();
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.github.liamdev06.mc.nmsadvanced.commands;
 
-import com.github.liamdev06.mc.nmsadvanced.customentity.GameEntity;
-import com.github.liamdev06.mc.nmsadvanced.customentity.exceptions.GameEntitySpawnError;
+import com.github.liamdev06.mc.nmsadvanced.entity.GameEntity;
+import com.github.liamdev06.mc.nmsadvanced.entity.exceptions.GameEntitySpawnErrorException;
 import com.github.liamdev06.mc.nmsadvanced.utility.Common;
 import com.github.liamdev06.mc.nmsadvanced.utility.PlayerCommand;
 import com.github.liamdev06.mc.nmsadvanced.utility.autoregistry.AutoRegister;
@@ -37,7 +37,7 @@ public class GameEntitySpawnCommand extends PlayerCommand {
             player.sendMessage(Common.color("&a&lENTITY SPAWNED! &aYou successfully spawned a &6" + gameEntity.getDisplayName() + "&a."));
         } catch (IllegalArgumentException enumException) {
             player.sendMessage(Common.color("&c&lINVALID ENTITY! &cThe entities available are: " + this.getValidEntities()));
-        } catch (GameEntitySpawnError entitySpawnError) {
+        } catch (GameEntitySpawnErrorException entitySpawnError) {
             player.sendMessage(Common.color("&c[ADMIN DEBUG] Exception was thrown: &6" + entitySpawnError.getMessage()));
         }
     }
