@@ -22,6 +22,7 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
   - `Server Menu Info Modifier` - modifies the server menu info by listening for the OutServerInfo packet and intercepting it
 - Custom Entities
   - `Killer Snowman` - custom entity snowman that overrides target+goal selectors to target nearby players and shots them with snowballs
+  - `Persistent` - the custom entites are kept and not removed nor replaced with default ones 
 - NPCs
   - `GameNPC` - class to spawn NPCs, set their skin, show and hide to players and set if they should look at a player
   - `NPC Registry` - persistant storage for NPCs. NPCs are serialized on server shutdown and stored in a data.yml
