@@ -25,6 +25,7 @@ public class Common {
 
     /**
      * Color a string with regular built-in bukkit colors using '&' color codes
+     * Since this is 1.8, there is no need for any other coloring (e.g. hex colors or fades)
      *
      * @param input a string that includes color codes to color
      * @return the {@param input} string but colored
@@ -52,7 +53,9 @@ public class Common {
                 String rawJson = reader.lines().collect(Collectors.joining(""));
 
                 // Return the json
-                return new JsonParser().parse(rawJson).getAsJsonObject();
+                return new JsonParser()
+                        .parse(rawJson)
+                        .getAsJsonObject();
             } catch (Exception ignored) {
                 return null;
             }

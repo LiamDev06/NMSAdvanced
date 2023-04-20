@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Automatically initialize objects that are marked with this (@AutoRegister) annotation
+ * Automatically initialize objects that are marked with this {@link AutoRegister} annotation
  *
  * @author Liam
  */
