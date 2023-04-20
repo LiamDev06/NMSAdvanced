@@ -18,6 +18,7 @@ Certain classes/methods may be documented with '@author Liam'. Code from there i
   - `/particlesbehind` - spawn particles behind a player when they walk using direct NMS
   - `/gameentityspawn` - spawn any custom game entity registered in the plugin
   - `/spawnnpc` - spawn an npc with a specific name, skin and decide if it should show in tablist or not
+  - `/nbt` - modifies NBT on the item in hand using direct NMS access and the NBT-API
 - Models
   - `Server Menu Info Modifier` - modifies the server menu info by listening for the OutServerInfo packet and intercepting it
 - Custom Entities
